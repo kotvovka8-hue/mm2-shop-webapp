@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "f19695bd-1a77-47fe-bfb3-23921cdc76b1",
+    "name": "Ice Phoenix",
+    "category": "Питомцы",
+    "price": 19,
+    "quantity": 3,
+    "rarity": "Godly",
+    "year": 2017
+  }
+]
