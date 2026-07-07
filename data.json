@@ -1,15 +1,5 @@
 [
   {
-    "id": "4885a406-aa00-4afa-a6b9-e30f4e749598",
-    "name": "Ice Phoenix",
-    "category": "Питомцы",
-    "price": 20,
-    "quantity": 0,
-    "rarity": "Godly",
-    "year": 2017,
-    "photo_url": "photos/4885a406-aa00-4afa-a6b9-e30f4e749598.jpg"
-  },
-  {
     "id": "129265d2-7b8b-4cb3-820f-3f4d70cf5ce4",
     "name": "Yellow Seer",
     "category": "Ножи",
