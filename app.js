@@ -11,7 +11,7 @@ async function loadData() {
         renderCategories();
         renderItems();
     } catch (err) {
-        document.getElementById('items').innerHTML = '<p style="color:#aaa;">Ошибка загрузки данных</p>';
+        document.getElementById('items').innerHTML = '<p style="color:#aaa;">Ошибка загрузки</p>';
     }
 }
 
@@ -19,9 +19,9 @@ function renderCategories() {
     const categories = ['all', ...new Set(allItems.map(i => i.category))];
     const container = document.getElementById('categories');
     container.innerHTML = categories.map(cat => {
-        const className = cat === activeCategory ? 'cat-btn active' : 'cat-btn';
+        const cls = cat === activeCategory ? 'cat-btn active' : 'cat-btn';
         const label = cat === 'all' ? 'Все' : cat;
-        return `<button class="${className}" data-cat="${cat}">${label}</button>`;
+        return `<button class="${cls}" data-cat="${cat}">${label}</button>`;
     }).join('');
     document.querySelectorAll('.cat-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -55,11 +55,8 @@ function renderItems() {
         card.addEventListener('click', () => {
             const name = card.dataset.name;
             navigator.clipboard.writeText(name).then(() => {
-                if (tg) {
-                    tg.showPopup({ message: `Предмет "${name}" скопирован, отправь его боту` });
-                } else {
-                    alert(`Предмет "${name}" скопирован, отправь его боту`);
-                }
+                if (tg) tg.showPopup({ message: `Предмет "${name}" скопирован, отправь его боту` });
+                else alert(`Предмет "${name}" скопирован, отправь его боту`);
             });
         });
     });
