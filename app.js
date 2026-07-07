@@ -1,6 +1,7 @@
 const tg = window.Telegram?.WebApp;
 if (tg) tg.ready();
 
+const BASE_URL = "https://kotvovka8-hue.github.io/mm2-shop-webapp/";  // ваш URL
 let allItems = [];
 let activeCategory = 'all';
 
@@ -43,8 +44,10 @@ function renderItems() {
     container.innerHTML = filtered.map(item => {
         const statusClass = item.quantity > 0 ? '' : 'out';
         const statusText = item.quantity > 0 ? 'В наличии' : 'Под заказ';
+        const imgSrc = item.photo_url ? BASE_URL + item.photo_url : '';
         return `
             <div class="item-card" data-name="${escapeHtml(item.name)}">
+                ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}">` : ''}
                 <div class="item-name">${item.name}</div>
                 <div class="item-details">${item.rarity} | ${item.price}₽</div>
                 <div class="item-status ${statusClass}">${statusText}</div>
