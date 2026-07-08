@@ -9,64 +9,48 @@ const RARITY_COLORS = {
     "Rare": "#2ecc71",
     "Legendary": "#e74c3c",
     "Godly": "#ff69b4",
-    "Godly-Chroma": "#9b59b6",
+    "Godly-Chroma": "chroma",   // специальный ключ для градиента
     "Ancient": "#9b59b6",
     "Unique": "#e67e22",
     "Vintage": "#f1c40f",
     "Evo": "#3498db"
 };
 
-// ---------- Авто‑перезагрузка (3 раза) ----------
+// Авто‑перезагрузка (3 раза)
 const MAX_RELOADS = 3;
 const RELOAD_KEY = 'mm2_reload_count';
 let reloadCount = 0;
-try {
-    reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0;
-} catch (e) {}
+try { reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0; } catch (e) {}
 
 if (reloadCount < MAX_RELOADS) {
-    try {
-        sessionStorage.setItem(RELOAD_KEY, reloadCount + 1);
-    } catch (e) {}
-    setTimeout(() => {
-        location.reload(true);
-    }, 500);
+    try { sessionStorage.setItem(RELOAD_KEY, reloadCount + 1); } catch (e) {}
+    setTimeout(() => { location.reload(true); }, 500);
     throw new Error('Reloading...');
 } else {
-    try {
-        sessionStorage.removeItem(RELOAD_KEY);
-    } catch (e) {}
-
-    // Фиксируем время последнего обновления (если localStorage доступен)
+    try { sessionStorage.removeItem(RELOAD_KEY); } catch (e) {}
     const now = new Date();
-    try {
-        localStorage.setItem('mm2_last_update', now.toISOString());
-    } catch (e) {}
-
-    // Отображаем время на странице
+    try { localStorage.setItem('mm2_last_update', now.toISOString()); } catch (e) {}
     const updateEl = document.getElementById('update-time');
     if (updateEl) {
         const formatted = now.toLocaleString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
+            year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
             timeZoneName: 'short'
         });
         updateEl.textContent = `🕒 Последнее обновление: ${formatted}`;
     }
 }
 
-// ---------- Основная логика магазина ----------
+// Загрузка данных
 async function loadData() {
     try {
         const resp = await fetch('data.json');
         allItems = await resp.json();
+        console.log('Данные загружены:', allItems);
         renderCategories();
         renderItems();
     } catch (err) {
+        console.error('Ошибка загрузки:', err);
         document.getElementById('items').innerHTML = '<p style="color:#aaa;">Ошибка загрузки</p>';
     }
 }
@@ -100,16 +84,23 @@ function renderItems() {
         const statusClass = item.quantity > 0 ? '' : 'out';
         const statusText = item.quantity > 0 ? 'В наличии' : 'Под заказ';
         const imgSrc = item.photo_url ? BASE_URL + item.photo_url : '';
-        const dotColor = RARITY_COLORS[item.rarity] || '#aaa';
-        const rarityDisplay = item.rarity === "Godly-Chroma"
-            ? `<span class="rarity-dot" style="background:#9b59b6;"></span> Chroma 🌈`
-            : `<span class="rarity-dot" style="background:${dotColor};"></span> ${item.rarity}`;
+
+        // Прямоугольная плашка редкости
+        let rarityBadge = '';
+        if (item.rarity === 'Godly-Chroma') {
+            rarityBadge = '<span class="rarity-badge chroma">Chroma</span>';
+        } else {
+            const bgColor = RARITY_COLORS[item.rarity] || '#aaa';
+            rarityBadge = `<span class="rarity-badge" style="background:${bgColor};">${item.rarity}</span>`;
+        }
+
         return `
             <div class="item-card" data-name="${escapeHtml(item.name)}">
                 ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}">` : ''}
                 <div class="item-name">${item.name}</div>
                 <div class="item-details">
-                    ${rarityDisplay} | ${item.price}₽
+                    ${rarityBadge}
+                    <span>${item.price}₽</span>
                 </div>
                 <div class="item-status ${statusClass}">${statusText}</div>
             </div>
