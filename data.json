@@ -28,5 +28,15 @@
     "rarity": "Vintage",
     "year": 2014,
     "photo_url": "photos/d58a5945-0f2e-4f6f-af17-f4b353bc12b5.jpg"
+  },
+  {
+    "id": "1f7afa0e-5682-4ad7-82a4-5c73b9218416",
+    "name": "Eternal III",
+    "category": "Ножи",
+    "price": 40,
+    "quantity": 1,
+    "rarity": "Godly",
+    "year": 2019,
+    "photo_url": "photos/1f7afa0e-5682-4ad7-82a4-5c73b9218416.jpg"
   }
 ]
