@@ -87,5 +87,12 @@ function escapeHtml(text) {
 }
 
 document.getElementById('search').addEventListener('input', renderItems);
-document.getElementById('refreshBtn').addEventListener('click', () => location.reload(true));
+
+// Безопасное добавление кнопки обновления (если её нет — просто игнорируем)
+const refreshBtn = document.getElementById('refreshBtn');
+if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => location.reload(true));
+}
+
+// Запуск загрузки данных (теперь гарантированно выполнится)
 loadData();
