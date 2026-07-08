@@ -81,30 +81,19 @@
             font-weight: 600;
             color: #fff;
             background: #aaa; /* fallback */
-            position: relative;
-            overflow: hidden;
+            line-height: 1.2;
         }
-        /* Градиент для Godly-Chroma: половина розовая, половина радужная */
+        /* Godly-Chroma: половина розовая, половина радужная (резкая граница) */
         .rarity-badge.chroma {
-            background: #ff69b4; /* левая половина – розовый */
-        }
-        .rarity-badge.chroma::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
             background: linear-gradient(
                 to right,
-                #ff69b4,
-                #e74c3c 20%,
-                #f39c12 40%,
-                #f1c40f 60%,
-                #2ecc71 80%,
+                #ff69b4 50%,
+                #e74c3c 60%,
+                #f39c12 70%,
+                #f1c40f 80%,
+                #2ecc71 90%,
                 #3498db 100%
             );
-            pointer-events: none;
         }
         .item-status {
             font-size: 11px; margin-top: 4px; padding: 2px 8px;
@@ -212,7 +201,8 @@
 
                 let rarityBadge = '';
                 if (item.rarity === 'Godly-Chroma') {
-                    rarityBadge = '<span class="rarity-badge chroma">Chroma</span>';
+                    // Полное название и класс chroma
+                    rarityBadge = '<span class="rarity-badge chroma">Godly-Chroma</span>';
                 } else {
                     const bgColor = RARITY_COLORS[item.rarity] || '#aaa';
                     rarityBadge = `<span class="rarity-badge" style="background:${bgColor};">${item.rarity}</span>`;
