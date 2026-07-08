@@ -78,5 +78,15 @@
     "rarity": "Godly",
     "year": 0,
     "photo_url": "photos/15ea498c-6766-458e-8fa9-3da0d2a04e2d.jpg"
+  },
+  {
+    "id": "624d9a3e-da04-47d7-a305-fe92e991cfcd",
+    "name": "Nightfire",
+    "category": "Пистолеты",
+    "price": 10,
+    "quantity": 1,
+    "rarity": "Rare",
+    "year": 0,
+    "photo_url": "photos/624d9a3e-da04-47d7-a305-fe92e991cfcd.jpg"
   }
 ]
