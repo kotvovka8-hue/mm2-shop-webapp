@@ -68,5 +68,15 @@
     "rarity": "Godly-Chroma",
     "year": 0,
     "photo_url": "photos/c96871d7-e814-4d97-8394-cbe6349182c0.jpg"
+  },
+  {
+    "id": "057fcc69-57b2-4caa-88d5-cd3f215a8c3e",
+    "name": "Fire Fox",
+    "category": "Питомцы",
+    "price": 26,
+    "quantity": 1,
+    "rarity": "Godly-Chroma",
+    "year": 0,
+    "photo_url": "photos/057fcc69-57b2-4caa-88d5-cd3f215a8c3e.jpg"
   }
 ]
