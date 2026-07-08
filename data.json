@@ -38,5 +38,15 @@
     "rarity": "Godly",
     "year": 0,
     "photo_url": "photos/76a3d54c-595b-4523-a1cd-c53b44bf86cd.jpg"
+  },
+  {
+    "id": "d670e701-9b4d-4b11-9c36-296cddf61555",
+    "name": "Mummy",
+    "category": "Пистолеты",
+    "price": 73,
+    "quantity": 1,
+    "rarity": "Rare",
+    "year": 2015,
+    "photo_url": "photos/d670e701-9b4d-4b11-9c36-296cddf61555.jpg"
   }
 ]
