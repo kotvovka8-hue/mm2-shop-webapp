@@ -16,6 +16,47 @@ const RARITY_COLORS = {
     "Evo": "#3498db"
 };
 
+// ---------- Логика авто‑перезагрузки (3 раза) ----------
+const MAX_RELOADS = 3;
+const RELOAD_KEY = 'mm2_reload_count';
+
+// Получаем текущий счётчик из sessionStorage (обнуляется при закрытии WebView)
+let reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0;
+
+if (reloadCount < MAX_RELOADS) {
+    // Увеличиваем и сохраняем
+    sessionStorage.setItem(RELOAD_KEY, reloadCount + 1);
+    // Перезагружаем страницу через полсекунды
+    setTimeout(() => {
+        location.reload(true);
+    }, 500);
+    // Прерываем выполнение, чтобы не отрисовывать лишнее
+    throw new Error('Reloading...');
+} else {
+    // Счётчик достиг максимума — удаляем ключ, чтобы при следующем открытии начать заново
+    sessionStorage.removeItem(RELOAD_KEY);
+
+    // Фиксируем время последнего обновления в localStorage
+    const now = new Date();
+    localStorage.setItem('mm2_last_update', now.toISOString());
+
+    // Отображаем время на странице
+    const updateEl = document.getElementById('update-time');
+    if (updateEl) {
+        const formatted = now.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZoneName: 'short'
+        });
+        updateEl.textContent = `Последнее обновление страницы: ${formatted}`;
+    }
+}
+
+// ---------- Основная логика магазина ----------
 async function loadData() {
     try {
         const resp = await fetch('data.json');
@@ -88,11 +129,11 @@ function escapeHtml(text) {
 
 document.getElementById('search').addEventListener('input', renderItems);
 
-// Безопасное добавление кнопки обновления (если её нет — просто игнорируем)
+// Безопасное добавление кнопки ручного обновления
 const refreshBtn = document.getElementById('refreshBtn');
 if (refreshBtn) {
     refreshBtn.addEventListener('click', () => location.reload(true));
 }
 
-// Запуск загрузки данных (теперь гарантированно выполнится)
+// Загружаем данные только после того, как прошли все перезагрузки
 loadData();
