@@ -28,5 +28,15 @@
     "rarity": "Godly",
     "year": 2017,
     "photo_url": "photos/ab00a274-4265-402b-8f7f-b76d6799d126.jpg"
+  },
+  {
+    "id": "76a3d54c-595b-4523-a1cd-c53b44bf86cd",
+    "name": "Yellow Seer",
+    "category": "Ножи",
+    "price": 40,
+    "quantity": 1,
+    "rarity": "Godly",
+    "year": 0,
+    "photo_url": "photos/76a3d54c-595b-4523-a1cd-c53b44bf86cd.jpg"
   }
 ]
