@@ -48,5 +48,15 @@
     "rarity": "Rare",
     "year": 2015,
     "photo_url": "photos/d670e701-9b4d-4b11-9c36-296cddf61555.jpg"
+  },
+  {
+    "id": "b81b0355-048a-4712-a536-40338c9074b5",
+    "name": "Fire Dog",
+    "category": "Питомцы",
+    "price": 26,
+    "quantity": 1,
+    "rarity": "Godly-Chroma",
+    "year": 0,
+    "photo_url": "photos/b81b0355-048a-4712-a536-40338c9074b5.jpg"
   }
 ]
