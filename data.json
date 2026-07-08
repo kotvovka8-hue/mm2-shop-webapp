@@ -18,5 +18,15 @@
     "rarity": "Godly",
     "year": 2017,
     "photo_url": "photos/953c3eef-2f55-4de7-8bf3-e210e0b525a3.jpg"
+  },
+  {
+    "id": "d58a5945-0f2e-4f6f-af17-f4b353bc12b5",
+    "name": "America",
+    "category": "Пистолеты",
+    "price": 42,
+    "quantity": 1,
+    "rarity": "Vintage",
+    "year": 2014,
+    "photo_url": "photos/d58a5945-0f2e-4f6f-af17-f4b353bc12b5.jpg"
   }
 ]
