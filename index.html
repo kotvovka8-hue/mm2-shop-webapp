@@ -8,7 +8,10 @@
 </head>
 <body>
     <div id="app">
-        <input type="text" id="search" placeholder="🔍 Поиск по названию..." autocomplete="off">
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <input type="text" id="search" placeholder="🔍 Поиск..." autocomplete="off" style="flex:1;">
+            <button id="refreshBtn" style="padding: 10px 16px; border-radius: 12px; border: none; background: #333; color: #fff; cursor:pointer;">🔄</button>
+        </div>
         <div id="categories"></div>
         <div id="items"></div>
     </div>
