@@ -16,29 +16,32 @@ const RARITY_COLORS = {
     "Evo": "#3498db"
 };
 
-// ---------- Логика авто‑перезагрузки (3 раза) ----------
+// ---------- Авто‑перезагрузка (3 раза) ----------
 const MAX_RELOADS = 3;
 const RELOAD_KEY = 'mm2_reload_count';
-
-// Получаем текущий счётчик из sessionStorage (обнуляется при закрытии WebView)
-let reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0;
+let reloadCount = 0;
+try {
+    reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0;
+} catch (e) {}
 
 if (reloadCount < MAX_RELOADS) {
-    // Увеличиваем и сохраняем
-    sessionStorage.setItem(RELOAD_KEY, reloadCount + 1);
-    // Перезагружаем страницу через полсекунды
+    try {
+        sessionStorage.setItem(RELOAD_KEY, reloadCount + 1);
+    } catch (e) {}
     setTimeout(() => {
         location.reload(true);
     }, 500);
-    // Прерываем выполнение, чтобы не отрисовывать лишнее
     throw new Error('Reloading...');
 } else {
-    // Счётчик достиг максимума — удаляем ключ, чтобы при следующем открытии начать заново
-    sessionStorage.removeItem(RELOAD_KEY);
+    try {
+        sessionStorage.removeItem(RELOAD_KEY);
+    } catch (e) {}
 
-    // Фиксируем время последнего обновления в localStorage
+    // Фиксируем время последнего обновления (если localStorage доступен)
     const now = new Date();
-    localStorage.setItem('mm2_last_update', now.toISOString());
+    try {
+        localStorage.setItem('mm2_last_update', now.toISOString());
+    } catch (e) {}
 
     // Отображаем время на странице
     const updateEl = document.getElementById('update-time');
@@ -52,7 +55,7 @@ if (reloadCount < MAX_RELOADS) {
             second: '2-digit',
             timeZoneName: 'short'
         });
-        updateEl.textContent = `Последнее обновление страницы: ${formatted}`;
+        updateEl.textContent = `🕒 Последнее обновление: ${formatted}`;
     }
 }
 
@@ -129,11 +132,9 @@ function escapeHtml(text) {
 
 document.getElementById('search').addEventListener('input', renderItems);
 
-// Безопасное добавление кнопки ручного обновления
 const refreshBtn = document.getElementById('refreshBtn');
 if (refreshBtn) {
     refreshBtn.addEventListener('click', () => location.reload(true));
 }
 
-// Загружаем данные только после того, как прошли все перезагрузки
 loadData();
