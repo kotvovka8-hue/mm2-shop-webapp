@@ -4,7 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>MM2 Shop</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            padding: 12px;
+        }
+        #search {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            background: #2c2c2c;
+            color: #fff;
+            font-size: 16px;
+        }
+        #categories {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .cat-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: #333;
+            border: none;
+            color: #ddd;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .cat-btn.active { background: #007aff; color: #fff; }
+        #items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .item-card {
+            background: #2c2c2c;
+            border-radius: 14px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.2s;
+        }
+        .item-card:active { transform: scale(0.97); background: #3a3a3a; }
+        .item-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+        .item-name {
+            font-weight: 800;
+            margin: 4px 0 6px;
+            font-size: 14px;
+        }
+        .item-details {
+            font-size: 12px;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        /* Прямоугольная плашка редкости */
+        .rarity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff;
+            background: #aaa; /* fallback */
+            position: relative;
+            overflow: hidden;
+        }
+        /* Градиент для Godly-Chroma: половина розовая, половина радужная */
+        .rarity-badge.chroma {
+            background: #ff69b4; /* левая половина – розовый */
+        }
+        .rarity-badge.chroma::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                #ff69b4,
+                #e74c3c 20%,
+                #f39c12 40%,
+                #f1c40f 60%,
+                #2ecc71 80%,
+                #3498db 100%
+            );
+            pointer-events: none;
+        }
+        .item-status {
+            font-size: 11px; margin-top: 4px; padding: 2px 8px;
+            border-radius: 10px; background: #007aff; color: #fff; display: inline-block;
+        }
+        .item-status.out { background: #ff9500; }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -18,6 +125,134 @@
         <div id="categories"></div>
         <div id="items"></div>
     </div>
-    <script src="app.js"></script>
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) tg.ready();
+
+        const BASE_URL = "https://kotvovka8-hue.github.io/mm2-shop-webapp/";
+        let allItems = [];
+        let activeCategory = 'all';
+
+        const RARITY_COLORS = {
+            "Rare": "#2ecc71",
+            "Legendary": "#e74c3c",
+            "Godly": "#ff69b4",
+            "Godly-Chroma": "chroma",
+            "Ancient": "#9b59b6",
+            "Unique": "#e67e22",
+            "Vintage": "#f1c40f",
+            "Evo": "#3498db"
+        };
+
+        // Авто‑перезагрузка (3 раза)
+        const MAX_RELOADS = 3;
+        const RELOAD_KEY = 'mm2_reload_count';
+        let reloadCount = 0;
+        try { reloadCount = parseInt(sessionStorage.getItem(RELOAD_KEY)) || 0; } catch (e) {}
+
+        if (reloadCount < MAX_RELOADS) {
+            try { sessionStorage.setItem(RELOAD_KEY, reloadCount + 1); } catch (e) {}
+            setTimeout(() => { location.reload(true); }, 500);
+            throw new Error('Reloading...');
+        } else {
+            try { sessionStorage.removeItem(RELOAD_KEY); } catch (e) {}
+            const now = new Date();
+            try { localStorage.setItem('mm2_last_update', now.toISOString()); } catch (e) {}
+            const updateEl = document.getElementById('update-time');
+            if (updateEl) {
+                const formatted = now.toLocaleString(undefined, {
+                    year: 'numeric', month: 'long', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit',
+                    timeZoneName: 'short'
+                });
+                updateEl.textContent = '🕒 Последнее обновление: ' + formatted;
+            }
+        }
+
+        async function loadData() {
+            try {
+                const resp = await fetch('data.json');
+                allItems = await resp.json();
+                renderCategories();
+                renderItems();
+            } catch (err) {
+                document.getElementById('items').innerHTML = '<p style="color:#aaa;">Ошибка загрузки</p>';
+            }
+        }
+
+        function renderCategories() {
+            const categories = ['all', ...new Set(allItems.map(i => i.category))];
+            const container = document.getElementById('categories');
+            container.innerHTML = categories.map(cat => {
+                const cls = cat === activeCategory ? 'cat-btn active' : 'cat-btn';
+                const label = cat === 'all' ? 'Все' : cat;
+                return `<button class="${cls}" data-cat="${cat}">${label}</button>`;
+            }).join('');
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    activeCategory = e.target.dataset.cat;
+                    renderCategories();
+                    renderItems();
+                });
+            });
+        }
+
+        function renderItems() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const filtered = allItems.filter(item => {
+                const matchCat = activeCategory === 'all' || item.category === activeCategory;
+                const matchSearch = item.name.toLowerCase().includes(search);
+                return matchCat && matchSearch;
+            });
+            const container = document.getElementById('items');
+            container.innerHTML = filtered.map(item => {
+                const statusClass = item.quantity > 0 ? '' : 'out';
+                const statusText = item.quantity > 0 ? 'В наличии' : 'Под заказ';
+                const imgSrc = item.photo_url ? BASE_URL + item.photo_url : '';
+
+                let rarityBadge = '';
+                if (item.rarity === 'Godly-Chroma') {
+                    rarityBadge = '<span class="rarity-badge chroma">Chroma</span>';
+                } else {
+                    const bgColor = RARITY_COLORS[item.rarity] || '#aaa';
+                    rarityBadge = `<span class="rarity-badge" style="background:${bgColor};">${item.rarity}</span>`;
+                }
+
+                return `
+                    <div class="item-card" data-name="${escapeHtml(item.name)}">
+                        ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}">` : ''}
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-details">
+                            ${rarityBadge}
+                            <span>${item.price}₽</span>
+                        </div>
+                        <div class="item-status ${statusClass}">${statusText}</div>
+                    </div>
+                `;
+            }).join('');
+            document.querySelectorAll('.item-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const name = card.dataset.name;
+                    navigator.clipboard.writeText(name).then(() => {
+                        if (tg) tg.showPopup({ message: `Предмет "${name}" скопирован, отправь его боту` });
+                        else alert(`Предмет "${name}" скопирован, отправь его боту`);
+                    });
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        document.getElementById('search').addEventListener('input', renderItems);
+
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => location.reload(true));
+        }
+
+        loadData();
+    </script>
 </body>
 </html>
