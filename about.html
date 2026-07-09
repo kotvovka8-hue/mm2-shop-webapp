@@ -53,18 +53,6 @@
             background-clip: text;
             color: transparent;
         }
-        .badge {
-            display: inline-block;
-            background: rgba(252, 92, 125, 0.2);
-            border: 1px solid rgba(252, 92, 125, 0.25);
-            border-radius: 40px;
-            padding: 4px 16px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #fc7b9e;
-            letter-spacing: 0.5px;
-            margin-left: 12px;
-        }
         .section {
             margin: 32px 0 28px;
         }
@@ -149,6 +137,15 @@
             padding-top: 24px;
             letter-spacing: 0.3px;
         }
+        .footer-note a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-note a:hover {
+            color: #80b4ff;
+            text-decoration: underline;
+        }
         @media (max-width: 500px) {
             .card {
                 padding: 24px 18px;
@@ -172,7 +169,6 @@
         <div class="logo">
             <span class="logo-icon">🎮</span>
             <h1>MM2 Shop</h1>
-            <span class="badge">v2.0</span>
         </div>
 
         <!-- Пользовательское соглашение -->
@@ -222,7 +218,7 @@
                 </div>
                 <div class="contact-item">
                     <span class="emoji">💬</span>
-                    <span>Telegram: <a href="https://t.me/mm2shop_support" target="_blank">@mm2shop_support</a></span>
+                    <span>Telegram-бот: <a href="https://t.me/MurderMysteryStore_bot" target="_blank">@MurderMysteryStore_bot</a></span>
                 </div>
                 <div class="contact-item">
                     <span class="emoji">🕒</span>
