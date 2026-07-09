@@ -4,8 +4,8 @@ if (tg) tg.ready();
 const BASE_URL = "https://kotvovka8-hue.github.io/mm2-shop-webapp/";
 let allItems = [];
 let activeCategory = 'all';
-let sortPrice = 'none';      // 'none', 'asc', 'desc'
-let filterRarity = 'all';    // 'all' или конкретная редкость
+let sortPrice = 'none';
+let filterRarity = 'all';
 
 const RARITY_COLORS = {
     "Rare": "#2ecc71",
@@ -39,7 +39,7 @@ if (reloadCount < MAX_RELOADS) {
             hour: '2-digit', minute: '2-digit', second: '2-digit',
             timeZoneName: 'short'
         });
-        updateEl.textContent = `🕒 Последнее обновление: ${formatted}`;
+        updateEl.textContent = '🕒 Последнее обновление: ' + formatted;
     }
 }
 
@@ -48,21 +48,20 @@ async function loadData() {
     try {
         const resp = await fetch('data.json');
         allItems = await resp.json();
-        // Заполняем выпадающий список редкостей
+        console.log('Загружено предметов:', allItems.length);
         populateRarityFilter();
         renderCategories();
         renderItems();
     } catch (err) {
         console.error('Ошибка загрузки:', err);
-        document.getElementById('items').innerHTML = '<p style="color:#aaa;">Ошибка загрузки</p>';
+        document.getElementById('items').innerHTML = '<p style="color:#aaa; text-align:center;">Ошибка загрузки данных</p>';
     }
 }
 
-// Заполнение select редкостей
+// Заполнение выпадающего списка редкостей
 function populateRarityFilter() {
     const rarities = [...new Set(allItems.map(i => i.rarity))].sort();
     const select = document.getElementById('filterRarity');
-    // Оставляем первый пункт "Все редкости"
     select.innerHTML = '<option value="all">Все редкости</option>';
     rarities.forEach(r => {
         const opt = document.createElement('option');
@@ -70,6 +69,10 @@ function populateRarityFilter() {
         opt.textContent = r;
         select.appendChild(opt);
     });
+    if (filterRarity !== 'all' && !rarities.includes(filterRarity)) {
+        filterRarity = 'all';
+        select.value = 'all';
+    }
 }
 
 function renderCategories() {
@@ -91,7 +94,6 @@ function renderCategories() {
 
 function renderItems() {
     const search = document.getElementById('search').value.toLowerCase();
-    // Фильтрация
     let filtered = allItems.filter(item => {
         const matchCat = activeCategory === 'all' || item.category === activeCategory;
         const matchSearch = item.name.toLowerCase().includes(search);
@@ -99,7 +101,6 @@ function renderItems() {
         return matchCat && matchSearch && matchRarity;
     });
 
-    // Сортировка по цене
     if (sortPrice === 'asc') {
         filtered.sort((a, b) => a.price - b.price);
     } else if (sortPrice === 'desc') {
@@ -155,17 +156,14 @@ function escapeHtml(text) {
 
 // Обработчики событий
 document.getElementById('search').addEventListener('input', renderItems);
-
 document.getElementById('sortPrice').addEventListener('change', (e) => {
     sortPrice = e.target.value;
     renderItems();
 });
-
 document.getElementById('filterRarity').addEventListener('change', (e) => {
     filterRarity = e.target.value;
     renderItems();
 });
-
 document.getElementById('resetFiltersBtn').addEventListener('click', () => {
     document.getElementById('sortPrice').value = 'none';
     document.getElementById('filterRarity').value = 'all';
@@ -176,7 +174,6 @@ document.getElementById('resetFiltersBtn').addEventListener('click', () => {
     renderCategories();
     renderItems();
 });
-
 document.getElementById('refreshBtn').addEventListener('click', () => location.reload(true));
 
 loadData();
