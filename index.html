@@ -8,13 +8,13 @@
 </head>
 <body>
     <div id="app">
-        <!-- Верхняя панель: поиск + обновление -->
+        <!-- Верхняя панель -->
         <div class="top-bar">
             <input type="text" id="search" placeholder="🔍 Поиск..." autocomplete="off">
             <button id="refreshBtn">🔄</button>
         </div>
 
-        <!-- Панель фильтров -->
+        <!-- Фильтры -->
         <div class="filter-bar">
             <select id="sortPrice">
                 <option value="none">Цена: без сортировки</option>
@@ -23,7 +23,6 @@
             </select>
             <select id="filterRarity">
                 <option value="all">Все редкости</option>
-                <!-- остальные заполнятся из данных -->
             </select>
             <button id="resetFiltersBtn">Сбросить</button>
         </div>
@@ -37,7 +36,6 @@
         <!-- Список предметов -->
         <div id="items"></div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
