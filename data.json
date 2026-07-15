@@ -98,5 +98,15 @@
     "rarity": "Legendary",
     "year": 0,
     "photo_url": "photos/ee7671d2-1607-40cf-a72a-3f5d71a7f747.jpg"
+  },
+  {
+    "id": "8450003c-ebb5-461e-8980-96d9aeb700cf",
+    "name": "Icewing",
+    "category": "Ножи",
+    "price": 70,
+    "quantity": 0,
+    "rarity": "Ancient",
+    "year": 2018,
+    "photo_url": "photos/8450003c-ebb5-461e-8980-96d9aeb700cf.jpg"
   }
 ]
