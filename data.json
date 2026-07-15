@@ -118,5 +118,15 @@
     "rarity": "Ancient",
     "year": 2019,
     "photo_url": "photos/7b2ae4f6-c8f9-4536-94bd-9c6d71ed8035.jpg"
+  },
+  {
+    "id": "8acd46a2-07e6-4a56-86da-101600d4f7b1",
+    "name": "Batwing",
+    "category": "Ножи",
+    "price": 120,
+    "quantity": 0,
+    "rarity": "Ancient",
+    "year": 2018,
+    "photo_url": "photos/8acd46a2-07e6-4a56-86da-101600d4f7b1.jpg"
   }
 ]
