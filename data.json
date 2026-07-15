@@ -148,5 +148,15 @@
     "rarity": "Ancient",
     "year": 2019,
     "photo_url": "photos/76a47520-2f65-42e5-a6a3-fdb01d884153.jpg"
+  },
+  {
+    "id": "0ff051f3-99b5-4dfd-9b70-2bb9260978e0",
+    "name": "Amerilaser",
+    "category": "Пистолеты",
+    "price": 99,
+    "quantity": 0,
+    "rarity": "Godly",
+    "year": 2016,
+    "photo_url": "photos/0ff051f3-99b5-4dfd-9b70-2bb9260978e0.jpg"
   }
 ]
