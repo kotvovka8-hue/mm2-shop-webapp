@@ -128,5 +128,15 @@
     "rarity": "Ancient",
     "year": 2018,
     "photo_url": "photos/8acd46a2-07e6-4a56-86da-101600d4f7b1.jpg"
+  },
+  {
+    "id": "3c679a95-55d6-4a33-aa4d-33d228ed6567",
+    "name": "Hallowscythe",
+    "category": "Ножи",
+    "price": 105,
+    "quantity": 0,
+    "rarity": "Ancient",
+    "year": 2020,
+    "photo_url": "photos/3c679a95-55d6-4a33-aa4d-33d228ed6567.jpg"
   }
 ]
