@@ -108,5 +108,15 @@
     "rarity": "Ancient",
     "year": 2018,
     "photo_url": "photos/8450003c-ebb5-461e-8980-96d9aeb700cf.jpg"
+  },
+  {
+    "id": "7b2ae4f6-c8f9-4536-94bd-9c6d71ed8035",
+    "name": "Elderwood Scythe",
+    "category": "Ножи",
+    "price": 107,
+    "quantity": 0,
+    "rarity": "Ancient",
+    "year": 2019,
+    "photo_url": "photos/7b2ae4f6-c8f9-4536-94bd-9c6d71ed8035.jpg"
   }
 ]
