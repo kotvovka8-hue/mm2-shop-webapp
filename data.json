@@ -138,5 +138,15 @@
     "rarity": "Ancient",
     "year": 2020,
     "photo_url": "photos/3c679a95-55d6-4a33-aa4d-33d228ed6567.jpg"
+  },
+  {
+    "id": "76a47520-2f65-42e5-a6a3-fdb01d884153",
+    "name": "Logchopper",
+    "category": "Ножи",
+    "price": 70,
+    "quantity": 0,
+    "rarity": "Ancient",
+    "year": 2019,
+    "photo_url": "photos/76a47520-2f65-42e5-a6a3-fdb01d884153.jpg"
   }
 ]
